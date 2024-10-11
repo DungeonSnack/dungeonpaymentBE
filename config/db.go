@@ -1,7 +1,7 @@
 package config
 
 import (
-	"gobizdevelop/helper/atdb"
+	"dungeonSnackBE/helper/atdb"
 	"os"
 )
 
