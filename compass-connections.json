@@ -1,0 +1,27 @@
+{
+  "type": "Compass Connections",
+  "version": {
+    "$numberInt": "1"
+  },
+  "connections": [
+    {
+      "id": "292cdca6-7106-4805-8a12-8eee9d31fe06",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1728800730558"
+        }
+      },
+      "favorite": {
+        "name": "nano.c3jog.mongodb.net",
+        "color": "no-color"
+      },
+      "savedConnectionType": "recent",
+      "connectionOptions": {
+        "connectionString": "mongodb+srv://ukasyzzam:MongoDB12@nano.c3jog.mongodb.net/",
+        "oidc": {
+          "serializedState": "eyJvaWRjUGx1Z2luU3RhdGVWZXJzaW9uIjowLCJzdGF0ZSI6W119"
+        }
+      }
+    }
+  ]
+}
