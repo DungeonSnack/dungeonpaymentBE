@@ -1,4 +1,4 @@
-package auth
+package controller
 
 import (
     "context"
@@ -13,7 +13,7 @@ import (
 // Fungsi Registrasi
 func Register(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
     collection := db.Database("user").Collection("users")
-    var newUser user.Users
+    var newUser model.Users
 
     // Decode JSON input ke struct Users
     if err := json.NewDecoder(r.Body).Decode(&newUser); err != nil {
@@ -22,7 +22,7 @@ func Register(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
     }
 
     // Cek apakah email sudah ada
-    var existingUser user.Users
+    var existingUser model.Users
     err := collection.FindOne(context.TODO(), bson.M{"email": newUser.Email}).Decode(&existingUser)
     if err == nil {
         http.Error(w, "User already exists", http.StatusConflict)
@@ -54,8 +54,8 @@ func Register(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
 // Fungsi Login
 func Login(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
     collection := db.Database("user").Collection("users")
-    var userCredentials user.Users
-    var foundUser user.Users
+    var userCredentials model.Users
+    var foundUser model.Users
 
     if err := json.NewDecoder(r.Body).Decode(&userCredentials); err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
