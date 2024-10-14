@@ -2,7 +2,7 @@ package main
 
 import (
 	"dungeonSnackBE/config"
-	"dungeonSnackBE/controller"
+	"dungeonSnackBE/controller/auth"
 	"fmt"
 	"log"
 	"net/http"
