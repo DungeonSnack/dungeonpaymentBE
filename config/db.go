@@ -2,10 +2,9 @@ package config
 
 import (
 	"dungeonSnackBE/helper/atdb"
-	"os"
 )
 
-var MongoString string = os.Getenv("MONGOSTRING")
+var MongoString string = "mongodb+srv://ukasyzzam:MongoDB12@nano.c3jog.mongodb.net/"
 
 var mongoinfo = atdb.DBInfo{
 	DBString: MongoString,
