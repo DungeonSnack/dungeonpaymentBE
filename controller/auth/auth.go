@@ -1,4 +1,4 @@
-package controller
+package auth
 
 import (
 	"context"
@@ -11,15 +11,13 @@ import (
 	whatsauth "github.com/whatsauth/itmodel"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // Fungsi Registrasi
 
-func Register(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
+func Register(w http.ResponseWriter, r *http.Request) {
 	// Menghubungkan ke database dsdatabase dan koleksi user
-	collection := db.Database("dsdatabase").Collection("user")
 	var newUser model.Users
 	var whatsapi whatsauth.Response
 	err := json.NewDecoder(r.Body).Decode(&newUser)
@@ -102,8 +100,7 @@ func Register(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
 	newUser.UpdatedAt = time.Now()
 	newUser.ID = primitive.NewObjectID() // Membuat ID baru
 
-	collection = config.Mongoconn.Collection("user")
-	// error cuy, collection := config.Mongoconn.Collection("user")
+	collection := config.Mongoconn.Collection("user")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

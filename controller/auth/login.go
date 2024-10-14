@@ -1,40 +1,54 @@
-package controller
+package auth
 
 import (
 	"context"
-	"dungeonSnackBE/model/pengguna"
+	"dungeonSnackBE/config"
+	model "dungeonSnackBE/model/pengguna"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Login(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
-    collection := db.Database("user").Collection("users")
-    var userCredentials model.Users
-    var foundUser model.Users
+func Login(w http.ResponseWriter, r *http.Request) {
+	var credentials model.Users
+	err := json.NewDecoder(r.Body).Decode(&credentials)
+	if err != nil {
+		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
 
-    if err := json.NewDecoder(r.Body).Decode(&userCredentials); err != nil {
-        http.Error(w, err.Error(), http.StatusBadRequest)
-        return
-    }
+	// Setup a context with timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-    // Cari user berdasarkan email
-    err := collection.FindOne(context.TODO(), bson.M{"email": userCredentials.Email}).Decode(&foundUser)
-    if err != nil {
-        http.Error(w, "Invalid email or password", http.StatusUnauthorized)
-        return
-    }
+	// Get the MongoDB collection
+	collection := config.Mongoconn.Collection("users")
 
-    // Cek password
-    if err := bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(userCredentials.Password)); err != nil {
-        http.Error(w, "Invalid email or password", http.StatusUnauthorized)
-        return
-    }
+	// Find the user by email
+	var user model.Users
+	err = collection.FindOne(ctx, bson.M{"email": credentials.Email}).Decode(&user)
+	if err != nil {
+		http.Error(w, "User not found", http.StatusUnauthorized)
+		return
+	}
 
-    // Kembalikan respon login berhasil
-    w.WriteHeader(http.StatusOK)
-    json.NewEncoder(w).Encode("Login successful")
+	// Compare the provided password with the hashed password stored in the database
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credentials.Password))
+	if err != nil {
+		http.Error(w, "Invalid password", http.StatusUnauthorized)
+		return
+	}
+
+	// Send the response without the token
+	response := map[string]interface{}{
+		"message":  "Login successful",
+		"user_id":  user.ID.Hex(),
+		"email":    user.Email,
+		"username": user.Nama,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
 }

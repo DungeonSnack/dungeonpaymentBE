@@ -2,12 +2,11 @@ package main
 
 import (
 	"dungeonSnackBE/config"
-	"dungeonSnackBE/controller/auth"
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
+	"dungeonSnackBE/routes"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -25,18 +24,19 @@ func main() {
 	} else {
 		fmt.Println("MongoDB connection is nil")
 	}
-	// Create a new router instance
-	router := mux.NewRouter()
 
-	// Rute untuk login
-	router.HandleFunc("/registrasi", func(w http.ResponseWriter, r *http.Request) {
-		controller.Register(w, r, connectdb.Client())
-	}).Methods("POST")
-	router.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		controller.Login(w, r, connectdb.Client())
-	}).Methods("POST")
+	router := routes.InitializeRoutes()
 
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+		Debug:            true,
+	})
+
+	handler := c.Handler(router)
 	// Menjalankan server pada port 8080
 	log.Println("Server started at :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
