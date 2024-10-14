@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"dungeonSnackBE/model/pengguna"
+     whatsauth "github.com/whatsauth/itmodel"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -19,16 +20,22 @@ func Register(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
     // Menghubungkan ke database dsdatabase dan koleksi user
     collection := db.Database("dsdatabase").Collection("user")
     var newUser model.Users
-
-    // Decode JSON input ke struct Users
-    if err := json.NewDecoder(r.Body).Decode(&newUser); err != nil {
-        http.Error(w, err.Error(), http.StatusBadRequest)
-        return
-    }
+    var whatsapi whatsauth.Response
+    err := json.NewDecoder(r.Body).Decode(&newUser)
+	if err != nil {
+		whatsapi.Response = "Invalid request payload"
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error":   whatsapi.Response,
+			"message": "The JSON request body could not be decoded. Please check the structure of your request.",
+		})
+		return
+	}
 
     // Cek apakah email sudah ada
     var existingUser model.Users
-    err := collection.FindOne(context.TODO(), bson.M{"email": newUser.Email}).Decode(&existingUser)
+    err = collection.FindOne(context.TODO(), bson.M{"email": newUser.Email}).Decode(&existingUser)
     if err == nil {
         http.Error(w, "User already exists", http.StatusConflict)
         return
