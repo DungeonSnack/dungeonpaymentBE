@@ -2,10 +2,10 @@ package main
 
 import (
 	"dungeonSnackBE/config"
+	"dungeonSnackBE/routes"
 	"fmt"
 	"log"
 	"net/http"
-	"dungeonSnackBE/routes"
 	"github.com/rs/cors"
 )
 
