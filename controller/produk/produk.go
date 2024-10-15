@@ -99,36 +99,36 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
 
 // UpdateProduct untuk mengupdate produk
 func UpdateProduct(w http.ResponseWriter, r *http.Request, db *mongo.Client) {
-	collection := db.Database("dsdatabase").Collection("product")
-	var productToUpdate model.Product
+    collection := db.Database("dsdatabase").Collection("product")
+    var productToUpdate model.Product
 
-	if err := json.NewDecoder(r.Body).Decode(&productToUpdate); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+    if err := json.NewDecoder(r.Body).Decode(&productToUpdate); err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
 
-	// Validasi kategori
-	if !isValidCategory(productToUpdate.Kategori) {
-		http.Error(w, "Kategori tidak valid. Pilih antara: minuman, makanan berat, makanan ringan, jelly.", http.StatusBadRequest)
-		return
-	}
+    // Validasi kategori
+    if !isValidCategory(productToUpdate.Kategori) {
+        http.Error(w, "Kategori tidak valid. Pilih antara: minuman, makanan berat, makanan ringan, jelly.", http.StatusBadRequest)
+        return
+    }
 
-	productToUpdate.UpdatedAt = time.Now()
+    productToUpdate.UpdatedAt = time.Now()
 
-	_, err := collection.UpdateOne(context.TODO(), bson.M{"_id": productToUpdate.ID}, bson.M{
-		"$set": bson.M{
-			"nama_produk": productToUpdate.NamaProduk,
-			"harga":       productToUpdate.Harga,
-			"deskripsi":   productToUpdate.Deskripsi,
-			"kategori":    productToUpdate.Kategori,
-			"updatedAt":   productToUpdate.UpdatedAt,
-		},
-	})
-	if err != nil {
-		http.Error(w, "Gagal mengupdate produk", http.StatusInternalServerError)
-		return
-	}
+    _, err := collection.UpdateOne(context.TODO(), bson.M{"_id": productToUpdate.ID}, bson.M{
+        "$set": bson.M{
+            "nama_produk": productToUpdate.NamaProduk,
+            "harga":       productToUpdate.Harga,
+            "deskripsi":   productToUpdate.Deskripsi,
+            "kategori":    productToUpdate.Kategori,
+            "updatedAt":   productToUpdate.UpdatedAt,
+        },
+    })
+    if err != nil {
+        http.Error(w, "Gagal mengupdate produk", http.StatusInternalServerError)
+        return
+    }
 
-	w.WriteHeader(http.StatusOK)
+    w.WriteHeader(http.StatusOK)
 }
 
