@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"dungeonSnackBE/config"
-	model "dungeonSnackBE/model/pengguna"
+	model "dungeonSnackBE/model"
 	"encoding/json"
 	"net/http"
 	"time"

@@ -3,7 +3,7 @@ package profil
 import (
 	"encoding/json"
 		"dungeonSnackBE/config"
-	model "dungeonSnackBE/model/pengguna"
+	model "dungeonSnackBE/model"
 	"net/http"
     "time"
     "context"

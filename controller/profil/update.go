@@ -8,7 +8,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"dungeonSnackBE/model/pengguna"
+	"dungeonSnackBE/model"
 )
 
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
