@@ -11,7 +11,7 @@ import (
 )
 
 func GetProfile(w http.ResponseWriter, r *http.Request) {
-    collection := config.Mongoconn.Collection("users")
+    collection := config.Mongoconn.Collection("user")
 
     // Create a context with a timeout
     ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

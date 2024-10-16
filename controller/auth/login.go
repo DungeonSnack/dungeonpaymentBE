@@ -25,7 +25,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	// Get the MongoDB collection
-	collection := config.Mongoconn.Collection("users")
+	collection := config.Mongoconn.Collection("user")
 
 	// Find the user by email
 	var user model.Users
