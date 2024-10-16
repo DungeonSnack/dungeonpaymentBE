@@ -5,10 +5,9 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
-	"dungeonSnackBE/helper/slug"
 	"dungeonSnackBE/config"
 	"context"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func GetKategori (w http.ResponseWriter, r *http.Request) {

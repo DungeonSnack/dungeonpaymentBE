@@ -2,13 +2,13 @@ package kategori
 
 import (
 	"dungeonSnackBE/config"
-	"dungeonSnackBE/helper/slug"
 	"encoding/json"
 	"net/http"
 	"time"
 
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"dungeonSnackBE/model"
 )
 
 func DeleteKategori(w http.ResponseWriter, r *http.Request) {
