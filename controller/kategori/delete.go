@@ -9,7 +9,6 @@ import (
 
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func DeleteKategori(w http.ResponseWriter, r *http.Request) {
