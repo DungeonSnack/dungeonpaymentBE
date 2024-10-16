@@ -20,6 +20,10 @@ func InitializeRoutes() *mux.Router {
 
 
 	router.HandleFunc("/addKategori", kategori.AddKategori).Methods("POST")
+	router.HandleFunc("/kategori", kategori.GetKategori).Methods("GET")
+	router.HandleFunc("/kategori", kategori.DeleteKategori).Methods("DELETE")
+	router.HandleFunc("/kategori", kategori.Updatekategori).Methods("PUT")
+
 	router.HandleFunc("/kategori/produk", produk.AddProduk).Methods("POST")
 	router.HandleFunc("/kategori/{slug}/produk", produk.GetProdukByKategori).Methods("GET")
 	router.HandleFunc("/kategori/produk/update", produk.UpdateProduk).Methods("PUT")
