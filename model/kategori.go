@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+// Kategori struct
 type Kategori struct {
 	ID           primitive.ObjectID `json:"kategori_id,omitempty" bson:"_id,omitempty"`
 	NamaKategori string             `json:"nama_kategori" bson:"nama_kategori"`
