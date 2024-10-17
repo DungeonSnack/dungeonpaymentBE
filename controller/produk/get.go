@@ -27,7 +27,7 @@ func GetProduk(w http.ResponseWriter, r *http.Request) {
 	var kategori model.Kategori
 	err := collection.FindOne(ctx, filter).Decode(&kategori)
 	if err != nil {
-		http.Error(w, "Toko not found", http.StatusNotFound)
+		http.Error(w, "Kategori not found", http.StatusNotFound)
 		return
 	}
 
@@ -99,7 +99,7 @@ func GetProdukByKategoriAndProduk(w http.ResponseWriter, r *http.Request) {
 	produkSlug := r.URL.Query().Get("produkSlug")
 
 	// Membuat filter untuk mencocokkan toko berdasarkan slug
-	filter := bson.M{"slug": slug, "menu.slug": produkSlug}
+	filter := bson.M{"slug": slug, "produk.slug": produkSlug}
 
 	collection := config.Mongoconn.Collection("kategori")
 
@@ -125,7 +125,7 @@ func GetProdukByKategoriAndProdukID(w http.ResponseWriter, r *http.Request) {
 	produkID := r.URL.Query().Get("produkID")
 
 	// Membuat filter untuk mencocokkan toko berdasarkan slug
-	filter := bson.M{"slug": slug, "menu._id": produkID}
+	filter := bson.M{"slug": slug, "produk._id": produkID}
 
 	collection := config.Mongoconn.Collection("kategori")
 

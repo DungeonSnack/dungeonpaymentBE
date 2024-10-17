@@ -16,20 +16,20 @@ func DeleteProduk(w http.ResponseWriter, r *http.Request) {
 	// Mengambil slug dari query parameter
 	slug := r.URL.Query().Get("slug")
 
-	// Dekode body permintaan untuk mendapatkan detail menu baru
-	var deletedMenu model.Produk
-	err := json.NewDecoder(r.Body).Decode(&deletedMenu)
+	// Dekode body permintaan untuk mendapatkan detail produk baru
+	var deletedProduk model.Produk
+	err := json.NewDecoder(r.Body).Decode(&deletedProduk)
 	if err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
 		return
 	}
 
-	// Membuat filter untuk mencocokkan toko berdasarkan slug
+	// Membuat filter untuk mencocokkan kategori berdasarkan slug
 	filter := bson.M{"slug": slug}
 
 	update := bson.M{
 		"$pull": bson.M{
-			"menu": bson.M{"_id": deletedMenu.ID},
+			"Produk": bson.M{"_id": deletedProduk.ID},
 		},
 	}
 

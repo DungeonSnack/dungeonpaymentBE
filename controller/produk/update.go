@@ -16,23 +16,23 @@ func UpdateProduk(w http.ResponseWriter, r *http.Request) {
 	// Mengambil slug dari query parameter
 	slug := r.URL.Query().Get("slug")
 
-	// Dekode body permintaan untuk mendapatkan detail menu baru
-	var updatedMenu model.Produk
-	err := json.NewDecoder(r.Body).Decode(&updatedMenu)
+	// Dekode body permintaan untuk mendapatkan detail produk baru
+	var updatedProduk model.Produk
+	err := json.NewDecoder(r.Body).Decode(&updatedProduk)
 	if err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
 		return
 	}
 
 	// Set waktu pembuatan
-	updatedMenu.UpdatedAt = time.Now()
+	updatedProduk.UpdatedAt = time.Now()
 
-	// Membuat filter untuk mencocokkan toko berdasarkan slug
-	filter := bson.M{"slug": slug, "menu._id": updatedMenu.ID}
+	// Membuat filter untuk mencocokkan kategori berdasarkan slug
+	filter := bson.M{"slug": slug, "Produk._id": updatedProduk.ID}
 
 	update := bson.M{
 		"$set": bson.M{
-			"menu.$": updatedMenu,
+			"Produk.$": updatedProduk,
 		},
 	}
 
