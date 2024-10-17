@@ -66,6 +66,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+
 	// Hash password
 	if newUser.Password == "" {
 		whatsapi.Response = "Password is required"
@@ -104,6 +105,20 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
+	var existingUser model.Users
+	err = collection.FindOne(ctx, bson.M{"email": newUser.Email}).Decode(&existingUser)
+	if err == nil {
+		// Jika tidak ada error, berarti email sudah ada di database
+		whatsapi.Response = "Email already in use"
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusConflict)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error":   whatsapi.Response,
+			"message": "The email address is already registered.",
+		})
+		return
+	}
 
 	result, err := collection.InsertOne(ctx, bson.M{
 		"nama":       newUser.Nama,
