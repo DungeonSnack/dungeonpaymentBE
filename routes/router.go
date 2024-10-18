@@ -5,6 +5,7 @@ import (
 	"dungeonSnackBE/controller/kategori" // Ensure this path is correct and the package exists
 	"dungeonSnackBE/controller/produk"
 	"dungeonSnackBE/controller/profil"
+	"dungeonSnackBE/controller/toko"
 
 	"github.com/gorilla/mux"
 )
@@ -28,5 +29,8 @@ func InitializeRoutes() *mux.Router {
 	router.HandleFunc("/kategori/{slug}/produk", produk.GetProdukByKategori).Methods("GET")
 	router.HandleFunc("/kategori/produk/update", produk.UpdateProduk).Methods("PUT")
 	router.HandleFunc("/kategori/{slug}/produk", produk.DeleteProduk).Methods("DELETE")
+
+	router.HandleFunc("/toko", toko.getToko).Methods("GET")
+	router.HandleFunc("/toko", toko.AddToko).Methods("POST")
 	return router
 }
