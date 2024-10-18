@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func GetToko(w http.ResponseWriter, r *http.Request) {
+func DeleteToko(w http.ResponseWriter, r *http.Request) {
 	var toko model.Toko
 	err := json.NewDecoder(r.Body).Decode(&toko)
 	if err != nil {
@@ -25,9 +25,9 @@ func GetToko(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	err = collection.FindOne(ctx, primitive.D{primitive.E{Key: "slug", Value: toko.Slug}}).Decode(&toko)
+	_, err = collection.DeleteOne(ctx, primitive.D{primitive.E{Key: "slug", Value: toko.Slug}})
 	if err != nil {
-		http.Error(w, "Failed to get toko", http.StatusInternalServerError)
+		http.Error(w, "Failed to delete toko", http.StatusInternalServerError)
 		return
 	}
 
