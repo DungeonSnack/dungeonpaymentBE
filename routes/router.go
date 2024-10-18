@@ -30,7 +30,9 @@ func InitializeRoutes() *mux.Router {
 	router.HandleFunc("/kategori/produk/update", produk.UpdateProduk).Methods("PUT")
 	router.HandleFunc("/kategori/{slug}/produk", produk.DeleteProduk).Methods("DELETE")
 
-	router.HandleFunc("/toko", toko.getToko).Methods("GET")
+	router.HandleFunc("/toko", toko.GetToko).Methods("GET")
 	router.HandleFunc("/toko", toko.AddToko).Methods("POST")
+	router.HandleFunc("/toko/update", toko.UpdateToko).Methods("PUT")
+	router.HandleFunc("/toko/delete", toko.DeleteToko).Methods("DELETE")
 	return router
 }
