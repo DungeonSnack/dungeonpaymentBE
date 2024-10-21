@@ -3,6 +3,7 @@ package routes
 import (
 	"dungeonSnackBE/controller/auth"
 	"dungeonSnackBE/controller/kategori" // Ensure this path is correct and the package exists
+	"dungeonSnackBE/controller/order"
 	"dungeonSnackBE/controller/produk"
 	"dungeonSnackBE/controller/profil"
 	"dungeonSnackBE/controller/toko"
@@ -34,5 +35,11 @@ func InitializeRoutes() *mux.Router {
 	router.HandleFunc("/toko", toko.AddToko).Methods("POST")
 	router.HandleFunc("/toko/update", toko.UpdateToko).Methods("PUT")
 	router.HandleFunc("/toko/delete", toko.DeleteToko).Methods("DELETE")
+
+	router.HandleFunc("/order", order.GetOrder).Methods("GET")
+	router.HandleFunc("/order", order.CreateOrder).Methods("POST")
+	router.HandleFunc("/order/update", order.UpdateOrder).Methods("PUT")
+	router.HandleFunc("/order/delete", order.DeleteOrder).Methods("DELETE")
+
 	return router
 }
