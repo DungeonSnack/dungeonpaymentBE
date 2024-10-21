@@ -16,7 +16,7 @@ type OrderItem struct {
 // order struct
 type Order struct {
 	ID           primitive.ObjectID `json:"order_id,omitempty" bson:"_id,omitempty"`
-	UserId	   primitive.ObjectID `json:"user_id" bson:"user_id"`
+	UserId	   primitive.ObjectID `json:"_id" bson:"user_id"`
 	TokoId	   primitive.ObjectID `json:"toko_id" bson:"toko_id"`
 	OrderItems []OrderItem `json:"order_items" bson:"order_items"`
 	TotalPrice  int `json:"total_price" bson:"total_price"`
