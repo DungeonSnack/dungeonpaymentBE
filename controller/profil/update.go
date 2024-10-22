@@ -10,8 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"dungeonSnackBE/model"
 )
-
-func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+//
+func UpdateProfil(w http.ResponseWriter, r *http.Request) {
 	vars := r.URL.Query()
 	userID := vars.Get("id")
 
