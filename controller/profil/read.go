@@ -10,7 +10,7 @@ import (
     "go.mongodb.org/mongo-driver/bson"
 )
 
-func GetProfile(w http.ResponseWriter, r *http.Request) {
+func GetProfil(w http.ResponseWriter, r *http.Request) {
     collection := config.Mongoconn.Collection("user")
 
     // Create a context with a timeout
