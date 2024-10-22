@@ -14,7 +14,7 @@ func InitializeRoutes() *mux.Router {
 	router.HandleFunc("/regis", auth.Register).Methods("POST")
 	router.HandleFunc("/login", auth.Login).Methods("POST")
 
-	router.HandleFunc("/profil/update", profil.UpdateProfile).Methods("POST")
-	router.HandleFunc("/profil", profil.GetProfile).Methods("GET")
+	router.HandleFunc("/profil/update", profil.UpdateProfil).Methods("PUT")
+	router.HandleFunc("/profil", profil.GetProfil).Methods("GET")
 	return router
 }
