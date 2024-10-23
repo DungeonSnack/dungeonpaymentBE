@@ -12,7 +12,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-
 // CreateProduct untuk menambahkan produk baru
 func AddProduk(w http.ResponseWriter, r *http.Request) {
 	// Mengambil slug dari query parameter
@@ -27,9 +26,9 @@ func AddProduk(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Set id produk baru dan waktu pembuatan
-	newProduk.ID = primitive.NewObjectID() // Set ObjectID baru untuk produk
-	newProduk.CreatedAt = time.Now()       // Set waktu saat ini untuk createdAt
-	newProduk.UpdatedAt = time.Now()       // Set waktu saat ini untuk updatedAt
+	newProduk.ID = primitive.NewObjectID()
+	newProduk.CreatedAt = time.Now()
+	newProduk.UpdatedAt = time.Now()
 
 	// Membuat filter untuk mencocokkan kategori berdasarkan slug
 	filter := bson.M{"slug": slug}
@@ -40,7 +39,7 @@ func AddProduk(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	collection := config.Mongoconn.Collection("kategori")
+	collection := config.Mongoconn.Collection("Produk")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
