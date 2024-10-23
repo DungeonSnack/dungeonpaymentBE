@@ -36,7 +36,7 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	collection := config.Mongoconn.Collection("user")
+	collection := config.Mongoconn.Collection("order")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
