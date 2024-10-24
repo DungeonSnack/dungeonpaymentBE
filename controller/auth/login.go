@@ -8,9 +8,21 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/golang-jwt/jwt/v4"
 	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
 )
+
+// JWT Secret Key (should be stored securely, e.g., environment variable)
+var jwtSecret = []byte("your_secret_key_here")
+
+// Claims defines the structure of the JWT claims
+type Claims struct {
+	UserID   string `json:"user_id"`
+	Email    string `json:"email"`
+	Username string `json:"username"`
+	jwt.StandardClaims
+}
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	var credentials model.Users
@@ -42,12 +54,34 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Send the response without the token
+	// JWT Token Creation
+	expirationTime := time.Now().Add(24 * time.Hour) // Token expires in 24 hours
+	claims := &Claims{
+		UserID:   user.ID.Hex(),
+		Email:    user.Email,
+		Username: user.Nama,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	// Create the token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	// Sign the token with the secret key
+	tokenString, err := token.SignedString(jwtSecret)
+	if err != nil {
+		http.Error(w, "Failed to create token", http.StatusInternalServerError)
+		return
+	}
+
+	// Send the response including the JWT token
 	response := map[string]interface{}{
 		"message":  "Login successful",
 		"user_id":  user.ID.Hex(),
 		"email":    user.Email,
 		"username": user.Nama,
+		"token":    tokenString,
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
