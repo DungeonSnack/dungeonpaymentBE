@@ -3,7 +3,7 @@ package routes
 import (
 	"dungeonSnackBE/controller/profil"
 	"dungeonSnackBE/controller/auth"
-
+	"dungeonSnackBE/controller/produk"
 	"github.com/gorilla/mux"
 )
 
@@ -16,5 +16,9 @@ func InitializeRoutes() *mux.Router {
 	//ke kontroller profil
 	router.HandleFunc("/profil-update", profil.UpdateProfil).Methods("PUT")
 	router.HandleFunc("/profil", profil.GetProfil).Methods("GET")
+	router.HandleFunc("/produk", produk.GetProduk).Methods("GET")
+	router.HandleFunc("/produk", produk.AddProduk).Methods("POST")
+	router.HandleFunc("/produk/{id}", produk.UpdateProduk).Methods("PUT")
+	router.HandleFunc("/produk/{id}", produk.DeleteProduk).Methods("DELETE")
 	return router
 }
