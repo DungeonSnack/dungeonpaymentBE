@@ -1,9 +1,11 @@
 package routes
 
 import (
-	"dungeonSnackBE/controller/profil"
 	"dungeonSnackBE/controller/auth"
-	"dungeonSnackBE/controller/produk"
+	"dungeonSnackBE/controller/order"
+	"dungeonSnackBE/controller/pembayaran"
+	"dungeonSnackBE/controller/profil"
+
 	"github.com/gorilla/mux"
 )
 
@@ -16,9 +18,18 @@ func InitializeRoutes() *mux.Router {
 	//ke kontroller profil
 	router.HandleFunc("/profil-update", profil.UpdateProfil).Methods("PUT")
 	router.HandleFunc("/profil", profil.GetProfil).Methods("GET")
-	router.HandleFunc("/produk", produk.GetProduk).Methods("GET")
-	router.HandleFunc("/produk", produk.AddProduk).Methods("POST")
-	router.HandleFunc("/produk/{id}", produk.UpdateProduk).Methods("PUT")
-	router.HandleFunc("/produk/{id}", produk.DeleteProduk).Methods("DELETE")
+
+	router.HandleFunc("/order", order.Getorder).Methods("GET")
+	router.HandleFunc("/add-order", order.Addorder).Methods("POST")
+	router.HandleFunc("/order-id", order.GetorderByID).Methods("GET")
+	router.HandleFunc("/order/update", order.UpdateorderByID).Methods("PUT")
+	router.HandleFunc("/order/delete", order.DeleteorderByID).Methods("DELETE")
+
+	router.HandleFunc("/order/pembayaran", pembayaran.AddpembayaranToorder).Methods("POST")
+	router.HandleFunc("/order/{slug}/pembayaran", pembayaran.GetpembayaranByorder).Methods("GET")
+	router.HandleFunc("/pembayaran-id", pembayaran.GetpembayaranByID).Methods("GET")
+	router.HandleFunc("/order/pembayaran/update", pembayaran.Updatepembayaran).Methods("PUT")
+	router.HandleFunc("/order/{slug}/pembayaran", pembayaran.Deletepembayaran).Methods("DELETE")
+
 	return router
 }
