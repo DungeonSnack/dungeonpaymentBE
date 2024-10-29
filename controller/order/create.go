@@ -21,7 +21,7 @@ func Addorder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	order.ID = primitive.NewObjectID()
-	order.Slug = slug.GenerateSlug(order.Namaorder)
+	order.Slug = slug.GenerateSlug(order.Namaorderan)
 
 	for i := range order.Pembayaran {
 		order.Pembayaran[i].ID = primitive.NewObjectID() // Generate new ObjectID

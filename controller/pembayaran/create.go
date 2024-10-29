@@ -39,7 +39,7 @@ func AddpembayaranToorder(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	collection := config.Mongoconn.Collection("market")
+	collection := config.Mongoconn.Collection("order")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
