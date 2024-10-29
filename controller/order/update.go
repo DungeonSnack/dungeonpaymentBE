@@ -52,7 +52,7 @@ func UpdateorderByID(w http.ResponseWriter, r *http.Request) {
 	// Melakukan update berdasarkan ID
 	result, err := collection.UpdateOne(
 		ctx,
-		bson.M{"_id": objID},
+		bson.M{"order_id": objID},
 		bson.M{"$set": updateFields},
 	)
 	if err != nil {
