@@ -25,7 +25,7 @@ func InitializeRoutes() *mux.Router {
 	router.HandleFunc("/order/update", order.UpdateorderByID).Methods("PUT")
 	router.HandleFunc("/order/delete", order.DeleteorderByID).Methods("DELETE")
 
-	router.HandleFunc("/order/pembayaran", pembayaran.AddpembayaranToorder).Methods("POST")
+	router.HandleFunc("/order/{slug}/pembayaran", pembayaran.AddpembayaranToorder).Methods("POST")
 	router.HandleFunc("/order/{slug}/pembayaran", pembayaran.GetpembayaranByorder).Methods("GET")
 	router.HandleFunc("/pembayaran-id", pembayaran.GetpembayaranByID).Methods("GET")
 	router.HandleFunc("/order/pembayaran/update", pembayaran.Updatepembayaran).Methods("PUT")
