@@ -4,6 +4,7 @@ import (
 	"dungeonSnackBE/controller/auth"
 	"dungeonSnackBE/controller/order"
 	"dungeonSnackBE/controller/pembayaran"
+	"dungeonSnackBE/controller/produk"
 	"dungeonSnackBE/controller/profil"
 
 	"github.com/gorilla/mux"
@@ -25,11 +26,16 @@ func InitializeRoutes() *mux.Router {
 	router.HandleFunc("/order/update", order.UpdateorderByID).Methods("PUT")
 	router.HandleFunc("/order/delete", order.DeleteorderByID).Methods("DELETE")
 
-	router.HandleFunc("/order/{slug}/pembayaran", pembayaran.AddpembayaranToorder).Methods("POST")
+	router.HandleFunc("/order/pembayaran", pembayaran.AddpembayaranToorder).Methods("POST")
 	router.HandleFunc("/order/{slug}/pembayaran", pembayaran.GetpembayaranByorder).Methods("GET")
 	router.HandleFunc("/pembayaran-id", pembayaran.GetpembayaranByID).Methods("GET")
 	router.HandleFunc("/order/pembayaran/update", pembayaran.Updatepembayaran).Methods("PUT")
 	router.HandleFunc("/order/{slug}/pembayaran", pembayaran.Deletepembayaran).Methods("DELETE")
+
+	router.HandleFunc("/produk", produk.CreateProduk).Methods("POST")
+	router.HandleFunc("/produk", produk.GetProduk).Methods("GET")
+	router.HandleFunc("/produk/update", produk.UpdateProduk).Methods("PUT")
+	router.HandleFunc("/produk/delete", produk.DeleteProduk).Methods("DELETE")
 
 	return router
 }

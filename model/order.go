@@ -10,6 +10,8 @@ import (
 type Order struct {
 	ID           primitive.ObjectID `json:"order_id,omitempty" bson:"_id,omitempty"`
 	Quantity     int                `json:"quantity,omitempty" bson:"quantity,omitempty"`
+	Payment	  []Payment          `json:"payment,omitempty" bson:"payment,omitempty"`
+	Slug         string             `bson:"slug" json:"slug"`
 }
 
 // OrderDetail struct

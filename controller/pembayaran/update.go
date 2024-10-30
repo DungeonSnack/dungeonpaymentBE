@@ -17,7 +17,7 @@ func Updatepembayaran(w http.ResponseWriter, r *http.Request) {
 	slug := r.URL.Query().Get("slug")
 
 	// Dekode body permintaan untuk mendapatkan detail pembayaran baru
-	var updatedpembayaran model.Pembayaran
+	var updatedpembayaran model.Payment
 	err := json.NewDecoder(r.Body).Decode(&updatedpembayaran)
 	if err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
