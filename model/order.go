@@ -9,11 +9,29 @@ import (
 // order struct
 type Order struct {
 	ID           primitive.ObjectID `json:"order_id,omitempty" bson:"_id,omitempty"`
-	Namaorderan string             `json:"nama_orderan" bson:"nama_orderan"`
-	Price       float32            `bson:"price" json:"price,omitempty"`
-	Description string             `bson:"description" json:"description,omitempty"`
-	Slug         string             `bson:"slug" json:"slug"`
-	Pembayaran       []Pembayaran           `bson:"pembayaran" json:"pembayaran"`
-	CreatedAt    time.Time          `json:"created_at" bson:"created_at"`
-	UpdatedAt    time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
+	Quantity     int                `json:"quantity,omitempty" bson:"quantity,omitempty"`
+}
+
+// OrderDetail struct
+type OrderDetail struct {
+	ID           primitive.ObjectID `json:"order_detail_id,omitempty" bson:"_id,omitempty"`
+	OrderID      primitive.ObjectID `json:"order_id,omitempty" bson:"order_id,omitempty"`
+	ProductID    primitive.ObjectID `json:"product_id,omitempty" bson:"product_id,omitempty"`
+	Quantity     int                `json:"quantity,omitempty" bson:"quantity,omitempty"`
+	Price        float32            `json:"price,omitempty" bson:"price,omitempty"`
+	TotalPrice   float32            `json:"total_price,omitempty" bson:"total_price,omitempty"`
+	CreatedAt    time.Time          `json:"created_at,omitempty" bson:"created_at,omitempty"`
+	UpdatedAt    time.Time          `json:"updated_at,omitempty" bson:"updated_at,omitempty"`
+}
+
+// payment struct
+type Payment struct {
+	ID           primitive.ObjectID `json:"payment_id,omitempty" bson:"_id,omitempty"`
+	OrderID      primitive.ObjectID `json:"order_id,omitempty" bson:"order_id,omitempty"`
+	TotalPrice   float32            `json:"total_price,omitempty" bson:"total_price,omitempty"`
+	PaymentDate  time.Time          `json:"payment_date,omitempty" bson:"payment_date,omitempty"`
+	PaymentProof string             `json:"payment_proof,omitempty" bson:"payment_proof,omitempty"`
+	Status       string             `json:"status,omitempty" bson:"status,omitempty"`
+	CreatedAt    time.Time          `json:"created_at,omitempty" bson:"created_at,omitempty"`
+	UpdatedAt    time.Time          `json:"updated_at,omitempty" bson:"updated_at,omitempty"`
 }
