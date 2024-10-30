@@ -36,7 +36,7 @@ func DeleteProduk(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	// Melakukan penghapusan berdasarkan ID
-	result, err := collection.DeleteOne(ctx, model.Produk{ID: objID})
+	result, err := collection.DeleteOne(ctx, model.Menu{ID: objID})
 	if err != nil {
 		http.Error(w, "Failed to delete produk", http.StatusInternalServerError)
 		return

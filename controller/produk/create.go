@@ -14,7 +14,7 @@ import (
 
 // CreateProduk untuk menambahkan produk baru
 func CreateProduk(w http.ResponseWriter, r *http.Request) {
-	var produk model.Produk
+	var produk model.Menu
 	err := json.NewDecoder(r.Body).Decode(&produk)
 	if err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)

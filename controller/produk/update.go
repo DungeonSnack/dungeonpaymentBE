@@ -27,7 +27,7 @@ func UpdateProduk(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var updatedProduk model.Produk
+	var updatedProduk model.Menu
 	err = json.NewDecoder(r.Body).Decode(&updatedProduk)
 	if err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
