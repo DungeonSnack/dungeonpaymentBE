@@ -18,7 +18,7 @@ func AddpembayaranToorder(w http.ResponseWriter, r *http.Request) {
 	slug := r.URL.Query().Get("slug")
 
 	// Dekode body permintaan untuk mendapatkan detail pembayaran baru
-	var newpembayaran model.Pembayaran
+	var newpembayaran model.Payment
 	err := json.NewDecoder(r.Body).Decode(&newpembayaran)
 	if err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)

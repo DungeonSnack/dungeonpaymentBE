@@ -28,7 +28,7 @@ func GetpembayaranByorder(w http.ResponseWriter, r *http.Request) {
 			return
 	}
 
-	json.NewEncoder(w).Encode(order.Pembayaran)
+	json.NewEncoder(w).Encode(order.Quantity)
 }
 
 func GetpembayaranByID(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +42,7 @@ func GetpembayaranByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Cari pembayaran berdasarkan pembayaran_id dari database
-	var pembayaran model.Pembayaran
+	var pembayaran model.Payment
 	collection := config.Mongoconn.Collection("order") // Pastikan koleksi yang benar
 	err = collection.FindOne(context.TODO(), bson.M{"pembayaran._id": objectID}).Decode(&pembayaran)
 

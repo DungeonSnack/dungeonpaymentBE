@@ -2,6 +2,6 @@ package slug
 
 import "strings"
 
-func GenerateSlug(Namaorderan string) string {
-    return strings.ToLower(strings.ReplaceAll(Namaorderan, " ", "-"))
+func GenerateSlug(NamaProduk string) string {
+    return strings.ToLower(strings.ReplaceAll(NamaProduk, " ", "-"))
 }
