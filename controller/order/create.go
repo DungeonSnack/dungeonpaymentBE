@@ -3,7 +3,6 @@ package order
 import (
 	"context"
 	"dungeonSnackBE/config"
-	"dungeonSnackBE/helper/slug"
 	"dungeonSnackBE/model"
 	"encoding/json"
 	"net/http"
@@ -20,13 +19,10 @@ func Addorder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	order.ID = primitive.NewObjectID()
-	order.Slug = slug.GenerateSlug(order.Namaorderan)
-
-	for i := range order.Pembayaran {
-		order.Pembayaran[i].ID = primitive.NewObjectID() // Generate new ObjectID
-		order.Pembayaran[i].CreatedAt = time.Now()       // Set createdAt to current time
-		order.Pembayaran[i].UpdatedAt = time.Now()       // Set updatedAt to current time
+	for i := range order.Payment {
+		order.Payment[i].ID = primitive.NewObjectID() // Generate new ObjectID
+		order.Payment[i].CreatedAt = time.Now()       // Set createdAt to current time
+		order.Payment[i].UpdatedAt = time.Now()       // Set updatedAt to current time
 	}
 
 	collection := config.Mongoconn.Collection("order")

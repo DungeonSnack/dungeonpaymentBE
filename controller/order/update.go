@@ -38,7 +38,7 @@ func UpdateorderByID(w http.ResponseWriter, r *http.Request) {
 
 	// Mengatur field yang akan diupdate
 	updateFields := bson.M{
-		"nama_order": updatedorder.Namaorderan,
+		"Quantity": updatedorder.Quantity,
 		"updatedAt": time.Now(),
 	}
 
