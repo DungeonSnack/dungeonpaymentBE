@@ -12,8 +12,16 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// UpdateToko is a function to update a toko
+// UpdateToko adalah fungsi untuk mengupdate data toko
 func UpdateToko(w http.ResponseWriter, r *http.Request) {
+	// Mendapatkan user dari context (misalnya dari middleware)
+	user, ok := r.Context().Value("user").(model.Users)
+	if !ok || user.Role != "penjual" {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// Decode payload toko yang akan diupdate
 	var toko model.Toko
 	err := json.NewDecoder(r.Body).Decode(&toko)
 	if err != nil {
@@ -21,18 +29,24 @@ func UpdateToko(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Set slug dan waktu update
 	toko.Slug = slug.GenerateSlug(toko.NamaToko)
-	toko.UpdatedAt = time.Now() // Set updatedAt to current time
+	toko.UpdatedAt = time.Now()
 
+	// Akses koleksi toko di MongoDB
 	collection := config.Mongoconn.Collection("toko")
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	_, err = collection.UpdateOne(ctx, bson.M{"toko_id": toko.ID}, bson.M{"$set": toko})
+	// Lakukan update pada dokumen toko berdasarkan toko_id
+	_, err = collection.UpdateOne(ctx, bson.M{"_id": toko.ID}, bson.M{"$set": toko})
 	if err != nil {
 		http.Error(w, "Failed to update toko", http.StatusInternalServerError)
 		return
 	}
 
+	// Kembalikan respon sukses
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(toko)
 }
