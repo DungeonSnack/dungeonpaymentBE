@@ -1,71 +1,78 @@
 package profil
 
 import (
+	"context"
+	"dungeonSnackBE/config"
+	"dungeonSnackBE/model"
 	"encoding/json"
 	"net/http"
 	"time"
-	"dungeonSnackBE/config"
-	"context"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"dungeonSnackBE/model"
 )
-//
+
 func UpdateProfil(w http.ResponseWriter, r *http.Request) {
 	vars := r.URL.Query()
 	userID := vars.Get("id")
 
-	// Convert the user_id from string to MongoDB ObjectID
+	// Konversi user_id dari string ke ObjectID MongoDB
 	oid, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
-		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+		http.Error(w, "ID pengguna tidak valid", http.StatusBadRequest)
 		return
 	}
 
-	// Parse the body to get the updated data
+	// Parsing body untuk mendapatkan data yang diperbarui
 	var updatedUser model.Users
 	err = json.NewDecoder(r.Body).Decode(&updatedUser)
 	if err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+		http.Error(w, "Payload permintaan tidak valid", http.StatusBadRequest)
 		return
 	}
 
-	// Set the updated timestamp
+	// Atur timestamp yang diperbarui
 	updatedUser.UpdatedAt = time.Now()
 
-	// Set up the MongoDB collection
+	// Siapkan field yang akan diperbarui
+	updateFields := bson.M{
+		"nama":       updatedUser.Nama,
+		"no_hp":      updatedUser.No_HP,
+		"email":      updatedUser.Email,
+		"updated_at": updatedUser.UpdatedAt,
+	}
+
+	// Cek dan perbarui role jika diperlukan
+	if updatedUser.Role == "penjual" {
+		updateFields["role"] = "penjual"
+	}
+
+	// Mengatur koleksi MongoDB
 	collection := config.Mongoconn.Collection("user")
 
-	// Create a context with timeout
+	// Buat context dengan batas waktu
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Define the update query using $set to update only specific fields
-	update := bson.M{
-		"$set": bson.M{
-			"nama":       updatedUser.Nama,
-			"no_hp":    updatedUser.No_HP,
-			"email":      updatedUser.Email,
-			"updated_at": updatedUser.UpdatedAt,
-		},
-	}
+	// Definisikan query pembaruan menggunakan $set untuk memperbarui field tertentu saja
+	update := bson.M{"$set": updateFields}
 
-	// Perform the update operation
+	// Lakukan operasi pembaruan
 	result, err := collection.UpdateOne(ctx, bson.M{"_id": oid}, update)
 	if err != nil {
-		http.Error(w, "Failed to update user", http.StatusInternalServerError)
+		http.Error(w, "Gagal memperbarui pengguna", http.StatusInternalServerError)
 		return
 	}
 
-	// Check if any document was actually updated
+	// Cek apakah ada dokumen yang berhasil diperbarui
 	if result.MatchedCount == 0 {
-		http.Error(w, "User not found", http.StatusNotFound)
+		http.Error(w, "Pengguna tidak ditemukan", http.StatusNotFound)
 		return
 	}
 
-	// Return success response
+	// Kembalikan respon sukses
 	response := map[string]interface{}{
-		"message": "User updated successfully",
+		"message": "Pengguna berhasil diperbarui",
 		"user_id": userID,
 	}
 	w.Header().Set("Content-Type", "application/json")
